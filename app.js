@@ -15,6 +15,10 @@ const rateLimit = require("express-rate-limit");
 // packages
 const express = require("express");
 const bodyParser = require("body-parser");
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+
+const swagger_doc = YAML.load("./swagger.yaml");
 
 
 // local imports
@@ -50,8 +54,11 @@ app.use((req, res, next)=>{
 })
 
 app.get("/", (req, res)=>{
-    res.send("JOBS API");
+    res.send("<h1>Jobs Api</h1> <a href='/api-docs'> API DOCS </a>");
 })
+
+//swagger middleware
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swagger_doc));
 
 // route middlewares
 app.use("/api/v1/auth",authRouter);
